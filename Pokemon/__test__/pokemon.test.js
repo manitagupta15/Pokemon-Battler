@@ -7,6 +7,7 @@ const {
   Squirtle,
   Bulbasaur,
   Rattata,
+  Pokeballs,
 } = require("../pokemon.js");
 
 describe("Pokemon", () => {
@@ -224,4 +225,82 @@ describe("Rattata Class:", () => {
     expect(testRattata.type).toBe(testPokemon.type);
     expect(testRattata.move).toBe(testPokemon.move);
   });
+});
+
+describe("Pokeballs Class:", () => {
+  test("Pokeballs has storage property", () => {
+    const testPokeball = new Pokeballs();
+    testPokeball.storage = [1];
+    expect(testPokeball.storage).toEqual([1]);
+  });
+
+  describe("Testing throw() function:", () => {
+    test("If Pokeball is empty, it should capture the passed pokemon", () => {
+      const testPokeball = new Pokeballs();
+      const testPokemon = new Pokemon("battler");
+      testPokeball.throw(testPokemon);
+
+      expect(testPokeball.storage).toEqual([testPokemon]);
+    });
+    test("If Pokeball is not empty, it should not capture the passed pokemon", () => {
+      const testPokeball = new Pokeballs();
+      const testPokemon = new Pokemon("battler");
+      testPokeball.throw(testPokemon);
+
+      const testPokemon2 = new Pokemon("pokemon2");
+      testPokeball.throw(testPokemon2);
+
+      expect(testPokeball.storage).toEqual([testPokemon]);
+    });
+    test("If throw is called with no arguments and pokeball is not empty, it should return the stored pokemon", () => {
+      const testPokeball = new Pokeballs();
+      const testPokemon = new Pokemon("battler");
+      testPokeball.throw(testPokemon);
+
+      expect(testPokeball.throw()).toEqual(testPokemon);
+    });
+    test("If throw is called with no arguments and pokeball is empty, it shouldn't return anything and log a message to console", () => {
+      const consoleSpy = jest.spyOn(console, "log");
+      const testPokeball = new Pokeballs();
+
+      testPokeball.throw();
+      expect(consoleSpy.mock.calls).toEqual([["Pokeball is empty"]]);
+    });
+  });
+
+  describe("Testing empty():", () => {
+    test("empty is a method in Pokeball", () => {
+      const testPokeball = new Pokeballs();
+
+      expect(typeof testPokeball.isEmpty).toBe("function");
+    });
+    test("return true is pokeball is empty, else return false", () => {
+      const testPokeball = new Pokeballs();
+      testPokeball.storage = [1];
+
+      expect(testPokeball.isEmpty()).toBe(false);
+      testPokeball.storage = [];
+      expect(testPokeball.isEmpty()).toBe(true);
+    });
+  });
+
+  describe("Testing contains():",()=>{
+    test("contains is a method in Pokeball", () => {
+      const testPokeball = new Pokeballs();
+
+      expect(typeof testPokeball.contains).toBe("function");
+    });
+    test("if Pokeball is empty, return 'empty ...' ", () => {
+      const testPokeball = new Pokeballs();
+
+      expect(testPokeball.contains()).toBe("empty ...");
+    });
+    test("if Pokeball is not empty, return the pokemon", () => {
+      const testPokeball = new Pokeballs();
+      const testPokemon = new Pokemon("battler");
+      testPokeball.throw(testPokemon)
+
+      expect(testPokeball.contains()).toEqual(testPokemon);
+    });
+  })
 });

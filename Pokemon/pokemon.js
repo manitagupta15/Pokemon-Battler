@@ -120,6 +120,41 @@ class Rattata extends Pokemon {
   }
 }
 
+class Pokeballs {
+  constructor() {
+    this.storage = [];
+  }
+  throw(caughtPokemon) {
+    if (caughtPokemon === undefined) {
+      if (this.storage.length === 0) {
+        console.log("Pokeball is empty");
+      } else {
+        const toBeReturned = this.storage.shift();
+        console.log(`Go Pokemon ${toBeReturned.name}`);
+        return toBeReturned;
+      }
+    } else if (this.storage.length < 1) {
+      this.storage.push(caughtPokemon);
+      console.log(`you caught Pokemon ${caughtPokemon.name}'s name`);
+    }
+  }
+  isEmpty() {
+    return this.storage.length === 0 ? true : false;
+  }
+  contains() {
+    if (this.isEmpty()) {
+      return "empty ...";
+    }
+    return this.storage[0];
+  }
+}
+
+/*
+contains
+should return the name of the Pokemon that is stored,
+if the Pokeball is empty is should return "empty ..."​
+
+*/
 module.exports = {
   Pokemon,
   Fire,
@@ -129,4 +164,5 @@ module.exports = {
   Squirtle,
   Bulbasaur,
   Rattata,
+  Pokeballs,
 };

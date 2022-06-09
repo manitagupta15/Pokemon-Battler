@@ -122,7 +122,7 @@ class Rattata extends Pokemon {
 
 class Pokeballs {
   constructor() {
-    this.storage = [];
+    this.storage = []; // storage can exceed the length of 1
   }
   throw(caughtPokemon) {
     if (caughtPokemon === undefined) {
@@ -149,10 +149,44 @@ class Pokeballs {
   }
 }
 
+class Trainer extends Pokeballs {
+  constructor() {
+    super();
+    this.belt = [];
+  }
+
+  catch(catchPokemon) {
+    if (this.belt.length < 6) {
+      const caughtPokemon = this.throw(catchPokemon); // returns the pokemon in this.storage Pokeball
+      this.belt.push(catchPokemon); // push the returned Pokeball in the belt
+    }
+  }
+
+  getPokemon(newPokemon) {
+    if (this.belt.includes(newPokemon)) {
+      //// do we need to remove the passed pokemon from the Belt????
+      this.throw(newPokemon);
+      return this.storage;
+    }
+  }
+}
+
 /*
-contains
-should return the name of the Pokemon that is stored,
-if the Pokeball is empty is should return "empty ..."​
+## Trainer
+
+
+- A Trainer should have a belt property (you decide an appropriate data type) that should have 6 Pokeballs
+
+### Methods
+
+- `catch`
+  - takes a Pokemon as an argument
+  - it should use one of its empty Pokeball's `throw` method to catch the Pokemon
+  - should do something if you don't have any empty Pokeballs, what and how is up to you
+- `getPokemon`
+  - takes the name of a Pokemon
+  - will search for the the Pokemon with that name in the belt
+  - use the Pokeball's throw to return that specific Pokemon
 
 */
 module.exports = {
@@ -165,4 +199,5 @@ module.exports = {
   Bulbasaur,
   Rattata,
   Pokeballs,
+  Trainer,
 };

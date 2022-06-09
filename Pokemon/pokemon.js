@@ -8,11 +8,11 @@ class Pokemon {
   }
 
   isEffectiveAgainst(newPokemon) {
-    return this.type !== newPokemon.type ? true : false;
+    return "normal" !== newPokemon.type ? true : false;
   }
 
   isWeakTo(newPokemon) {
-    return this.type !== newPokemon.type ? true : false;
+    return "normal" !== newPokemon.type ? true : false;
   }
 
   takeDamage(healthDamage) {
@@ -31,4 +31,77 @@ class Pokemon {
   }
 }
 
-module.exports = { Pokemon };
+class Fire extends Pokemon {
+  constructor(name) {
+    super(name);
+    this.type = "fire";
+  }
+  isEffectiveAgainst(newPokemon) {
+    // grass
+    if (newPokemon.type === "grass") {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  isWeakTo(newPokemon) {
+    if (newPokemon.type === "water") {
+      return true;
+    } else {
+      return false;
+    }
+  }
+}
+class Grass extends Pokemon {
+  constructor(name) {
+    super(name);
+    this.type = "grass";
+  }
+  isEffectiveAgainst(newPokemon) {
+    if (newPokemon.type === "water") {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  isWeakTo(newPokemon) {
+    if (newPokemon.type === "fire") {
+      return true;
+    } else {
+      return false;
+    }
+  }
+}
+class Water extends Pokemon {
+  constructor(name) {
+    super(name);
+    this.type = "water";
+  }
+  isEffectiveAgainst(newPokemon) {
+    if (newPokemon.type === "fire") {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  isWeakTo(newPokemon) {
+    if (newPokemon.type === "grass") {
+      return true;
+    } else {
+      return false;
+    }
+  }
+}
+
+
+module.exports = { Pokemon, Fire, Water, Grass };
+
+/*
+Pokemon Species (4 classes each extending from the relevant class) -> Charmander, Squirtle, Bulbasaur, Rattata
+​
+
+Charmander should be a FirePokemon and have its move be "ember"
+Squirtle should be a WaterPokemon and have its move be "water gun"
+Bulbasaur should be a GrassPokemon and have its move be "vine whip"
+Rattata should be a Pokemon
+*/

@@ -1,4 +1,4 @@
-const { Pokemon } = require("../pokemon.js");
+const { Pokemon, Fire, Water, Grass } = require("../pokemon.js");
 
 describe("Pokemon", () => {
   test("check if Pokemon class has a name property", () => {
@@ -97,5 +97,89 @@ describe("Pokemon", () => {
 
     testPokemon.hitPoints = 4;
     expect(testPokemon.hasFainted()).toBe(false);
+  });
+});
+
+describe("Fire Class:", () => {
+  test("Fire Pokemon has a type property set to fire", () => {
+    const testFire = new Fire("Battler");
+    expect(testFire.name).toBe("Battler");
+    expect(testFire.type).toBe("fire");
+  });
+
+  test("Fire Pokemon is effective against pokemon of type grass", () => {
+    const testFire = new Fire("Battler");
+    const testGrass = new Grass("PokeGrass");
+    testGrass.type = "grass";
+
+    expect(testFire.isEffectiveAgainst(testGrass)).toBe(true);
+
+    const testWater = new Water("water");
+    expect(testFire.isEffectiveAgainst(testWater)).toBe(false);
+  });
+
+  test("Fire Pokemon is weak against pokemon of type water", () => {
+    const testFire = new Fire("Battler");
+    const testWater = new Pokemon("water");
+    testWater.type = "water";
+
+    expect(testFire.isWeakTo(testWater)).toBe(true);
+
+    testWater.type = "grass";
+    expect(testFire.isWeakTo(testWater)).toBe(false);
+  });
+});
+describe("Grass Class:", () => {
+  test("Grass Pokemon has a type property set to grass", () => {
+    const testGrass = new Grass("Battler");
+    expect(testGrass.name).toBe("Battler");
+    expect(testGrass.type).toBe("grass");
+  });
+
+  test("Grass Pokemon is effective against pokemon of type water", () => {
+    const testGrass = new Grass("Battler");
+    const testWater = new Water("grass");
+    expect(testGrass.isEffectiveAgainst(testWater)).toBe(true);
+
+    const testFire = new Fire("battler");
+    expect(testGrass.isEffectiveAgainst(testFire)).toBe(false);
+  });
+
+  test("Grass Pokemon is weak against pokemon of type fire", () => {
+    const testGrass = new Grass("battler");
+    const testFire = new Fire("firecl");
+
+    expect(testGrass.isWeakTo(testFire)).toBe(true);
+
+    const testWater = new Water("newwater");
+    expect(testGrass.isWeakTo(testWater)).toBe(false);
+  });
+});
+
+describe("Water Class:", () => {
+  test("Water Pokemon has a type property set to water", () => {
+    const testWater = new Water("Battler");
+    expect(testWater.name).toBe("Battler");
+    expect(testWater.type).toBe("water");
+  });
+
+  test("Water Pokemon is effective against pokemon of type Fire", () => {
+    const testWater = new Water("Battler");
+    const testFire = new Fire("grass");
+    expect(testWater.isEffectiveAgainst(testFire)).toBe(true);
+
+    testFire.type = "grass";
+    expect(testWater.isEffectiveAgainst(testFire)).toBe(false);
+  });
+
+  test("Water Pokemon is weak against pokemon of type grass", () => {
+    const testWater = new Water("Battler");
+    const testGrass = new Pokemon("water");
+    testGrass.type = "grass";
+
+    expect(testWater.isWeakTo(testGrass)).toBe(true);
+
+    testGrass.type = "fire";
+    expect(testWater.isWeakTo(testGrass)).toBe(false);
   });
 });

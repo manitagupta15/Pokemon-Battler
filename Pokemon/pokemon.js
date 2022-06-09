@@ -93,15 +93,40 @@ class Water extends Pokemon {
   }
 }
 
+class Charmander extends Fire {
+  constructor(name) {
+    super(name);
+    this.move = "ember";
+  }
+}
 
-module.exports = { Pokemon, Fire, Water, Grass };
+class Squirtle extends Water {
+  constructor(name) {
+    super(name);
+    this.move = "water gun";
+  }
+}
 
-/*
-Pokemon Species (4 classes each extending from the relevant class) -> Charmander, Squirtle, Bulbasaur, Rattata
-​
+class Bulbasaur extends Grass {
+  constructor(name) {
+    super(name);
+    this.move = "vine whip";
+  }
+}
 
-Charmander should be a FirePokemon and have its move be "ember"
-Squirtle should be a WaterPokemon and have its move be "water gun"
-Bulbasaur should be a GrassPokemon and have its move be "vine whip"
-Rattata should be a Pokemon
-*/
+class Rattata extends Pokemon {
+  constructor(name) {
+    super(name);
+  }
+}
+
+module.exports = {
+  Pokemon,
+  Fire,
+  Water,
+  Grass,
+  Charmander,
+  Squirtle,
+  Bulbasaur,
+  Rattata,
+};

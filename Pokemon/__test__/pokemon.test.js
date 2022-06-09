@@ -1,4 +1,13 @@
-const { Pokemon, Fire, Water, Grass } = require("../pokemon.js");
+const {
+  Pokemon,
+  Fire,
+  Water,
+  Grass,
+  Charmander,
+  Squirtle,
+  Bulbasaur,
+  Rattata,
+} = require("../pokemon.js");
 
 describe("Pokemon", () => {
   test("check if Pokemon class has a name property", () => {
@@ -181,5 +190,38 @@ describe("Water Class:", () => {
 
     testGrass.type = "fire";
     expect(testWater.isWeakTo(testGrass)).toBe(false);
+  });
+});
+
+describe("Charmander Class:", () => {
+  test("Charmander Pokemon has a move property set to ember", () => {
+    const testCharmander = new Charmander("Battler");
+    expect(testCharmander.name).toBe("Battler");
+    expect(testCharmander.move).toBe("ember");
+  });
+});
+
+describe("Squirtle Class:", () => {
+  test("Squirtle Pokemon has a move property set to water gun", () => {
+    const testSquirtle = new Squirtle("Battler");
+    expect(testSquirtle.name).toBe("Battler");
+    expect(testSquirtle.move).toBe("water gun");
+  });
+});
+
+describe("Bulbasaur Class:", () => {
+  test("Bulbasaur Pokemon has a move property set to vine whip", () => {
+    const testBulbasaur = new Bulbasaur("Battler");
+    expect(testBulbasaur.name).toBe("Battler");
+    expect(testBulbasaur.move).toBe("vine whip");
+  });
+});
+
+describe("Rattata Class:", () => {
+  test("Rattata Pokemon has same properties as Pokemon class", () => {
+    const testRattata = new Rattata("Battler");
+    const testPokemon = new Pokemon("Battler");
+    expect(testRattata.type).toBe(testPokemon.type);
+    expect(testRattata.move).toBe(testPokemon.move);
   });
 });

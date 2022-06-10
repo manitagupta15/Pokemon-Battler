@@ -227,12 +227,11 @@ describe("Rattata Class:", () => {
     expect(testRattata.move).toBe(testPokemon.move);
   });
 });
-
 describe("Pokeballs Class:", () => {
-  test("Pokeballs has storage property", () => {
+  test("Pokeballs has a pokemon property", () => {
     const testPokeball = new Pokeballs();
-    testPokeball.storage = [1];
-    expect(testPokeball.storage).toEqual([1]);
+    testPokeball.storage = 1;
+    expect(testPokeball.storage).toBe(1);
   });
 
   describe("Testing throw() function:", () => {
@@ -241,7 +240,7 @@ describe("Pokeballs Class:", () => {
       const testPokemon = new Pokemon("battler");
       testPokeball.throw(testPokemon);
 
-      expect(testPokeball.storage).toEqual([testPokemon]);
+      expect(testPokeball.storage).toEqual(testPokemon);
     });
     test("If Pokeball is not empty, it should not capture the passed pokemon", () => {
       const testPokeball = new Pokeballs();
@@ -251,13 +250,15 @@ describe("Pokeballs Class:", () => {
       const testPokemon2 = new Pokemon("pokemon2");
       testPokeball.throw(testPokemon2);
 
-      expect(testPokeball.storage).toEqual([testPokemon]);
+      expect(testPokeball.storage).toEqual(testPokemon);
+      expect(testPokeball.storage).not.toEqual(testPokemon2);
     });
     test("If throw is called with no arguments and pokeball is not empty, it should return the stored pokemon", () => {
       const testPokeball = new Pokeballs();
       const testPokemon = new Pokemon("battler");
       testPokeball.throw(testPokemon);
 
+      expect(testPokeball.storage).toEqual(testPokemon);
       expect(testPokeball.throw()).toEqual(testPokemon);
     });
     test("If throw is called with no arguments and pokeball is empty, it shouldn't return anything and log a message to console", () => {
@@ -265,7 +266,7 @@ describe("Pokeballs Class:", () => {
       const testPokeball = new Pokeballs();
 
       testPokeball.throw();
-      expect(consoleSpy.mock.calls).toEqual([["Pokeball is empty"]]);
+      expect(consoleSpy.mock.calls).toEqual([["No Pokemon in the ball"]]);
     });
   });
 
@@ -277,10 +278,11 @@ describe("Pokeballs Class:", () => {
     });
     test("return true is pokeball is empty, else return false", () => {
       const testPokeball = new Pokeballs();
-      testPokeball.storage = [1];
-
+      // add pokemon to pokeball
+      testPokeball.throw(new Pokemon("balbausar"));
       expect(testPokeball.isEmpty()).toBe(false);
-      testPokeball.storage = [];
+      // remove pokemon from pokeball
+      testPokeball.throw();
       expect(testPokeball.isEmpty()).toBe(true);
     });
   });
@@ -300,7 +302,6 @@ describe("Pokeballs Class:", () => {
       const testPokeball = new Pokeballs();
       const testPokemon = new Pokemon("battler");
       testPokeball.throw(testPokemon);
-
       expect(testPokeball.contains()).toEqual(testPokemon);
     });
   });
@@ -320,52 +321,60 @@ describe("Trainer Class: ", () => {
 
   test("trainer class has a method Catch() which takes a pokemon as an argument and stores it in its pokeball, then stores that pokeball in its belt provided belts length is less than 7 ", () => {
     const testTrainer = new Trainer();
-    const testPokemon1 = new Pokemon("battlerNo1");
+
+    // pokemons
+    const testPokemon1 = new Pokemon("pok1");
+    const testPokemon2 = new Pokemon("pok2");
+    const testFire1 = new Fire("fire1");
+    const testFire2 = new Fire("fire2");
+    const testWater1 = new Water("water1");
+    const testWater2 = new Water("water2");
+    const testGrass1 = new Grass("grass1");
+    const testGrass2 = new Grass("grass2");
+
+    // pokeballs
+    const testPokeball1 = new Pokeballs();
+    const testPokeball2 = new Pokeballs();
+    const testPokeball3 = new Pokeballs();
+    const testPokeball4 = new Pokeballs();
+    const testPokeball5 = new Pokeballs();
+    const testPokeball6 = new Pokeballs();
+    const testPokeball7 = new Pokeballs();
+    const testPokeball8 = new Pokeballs();
+
+    // catch pokemons in pokeballs
+    testPokeball1.throw(testPokemon1);
+    testPokeball2.throw(testPokemon2);
+    testPokeball3.throw(testFire1);
+    testPokeball4.throw(testFire2);
+    testPokeball5.throw(testWater1);
+    testPokeball6.throw(testWater2);
+    testPokeball7.throw(testGrass1);
+    testPokeball8.throw(testGrass2);
+
     testTrainer.catch(testPokemon1);
-
-    testTrainer.storage = [testPokemon1];
-
-    expect(testTrainer.belt).toEqual([testPokemon1]);
-    const testPokemon2 = new Pokemon("battlerNo2");
-
     testTrainer.catch(testPokemon2);
-    expect(testTrainer.belt).toEqual([testPokemon1, testPokemon2]);
-    const testWater = new Water("water");
-    testTrainer.catch(testWater);
-    expect(testTrainer.belt).toEqual([testPokemon1, testPokemon2, testWater]);
-    testTrainer.catch(testWater);
-    testTrainer.catch(testWater);
-    testTrainer.catch(testWater);
-    expect(testTrainer.belt).toEqual([
-      testPokemon1,
-      testPokemon2,
-      testWater,
-      testWater,
-      testWater,
-      testWater,
-    ]);
-    testTrainer.catch(testWater);
-    expect(testTrainer.belt).not.toEqual([
-      testPokemon1,
-      testPokemon2,
-      testWater,
-      testWater,
-      testWater,
-      testWater,
-      testWater,
-    ]);
+    testTrainer.catch(testFire1);
+    testTrainer.catch(testFire2);
+    testTrainer.catch(testWater1);
+    testTrainer.catch(testWater2);
+    testTrainer.catch(testGrass1);
+    testTrainer.catch(testGrass2);
 
-    testTrainer.catch(testWater);
-    expect(testTrainer.belt).not.toEqual([
-      testPokemon1,
-      testPokemon2,
-      testWater,
-      testWater,
-      testWater,
-      testWater,
-      testWater,
-      testWater,
-    ]);
+    const allPokeballs = [
+      testPokeball1,
+      testPokeball2,
+      testPokeball3,
+      testPokeball4,
+      testPokeball5,
+      testPokeball6,
+      testPokeball7,
+      testPokeball8,
+    ];
+
+    const belt = allPokeballs.slice(0, 6);
+    expect(testTrainer.belt).not.toEqual(allPokeballs);
+    expect(testTrainer.belt).toEqual(belt);
   });
 
   test("trainer class has a method getPokemon() ", () => {
@@ -373,30 +382,99 @@ describe("Trainer Class: ", () => {
     expect(typeof testTrainer.getPokemon).toBe("function");
   });
 
-  test.only("trainer class has a method getPokemon() that take a Pokemon as an argument, passed that Pokemon in throw() method if passed Pokemon is Present in the Belt ", () => {
+  test("trainer class has a method getPokemon() that take a Pokemon as an argument, passed that Pokemon in throw() method if passed Pokemon is Present in the Belt ", () => {
     const testTrainer = new Trainer();
 
-    const testWater = new Water("battler");
-    //  testTrainer.catch(testWater);
-    const testFire = new Fire("battler");
-    //testTrainer.catch(testFire);
-    const testPokemon = new Pokemon("battler");
-    // testTrainer.catch(testPokemon);
-    testTrainer.belt = [testWater, testFire, testPokemon];
-    console.log(testTrainer.belt);
-    expect(testTrainer.belt.includes(testFire)).toBe(true);
+    // pokemons
+    const testPokemon1 = new Pokemon("pok1");
+    const testPokemon2 = new Pokemon("pok2");
+    const testFire1 = new Fire("fire1");
+    const testFire2 = new Fire("fire2");
+    const testWater1 = new Water("water1");
+    const testWater2 = new Water("water2");
+    const testGrass1 = new Grass("grass1");
+    const testGrass2 = new Grass("grass2");
 
-    const testPokemon1 = new Pokemon("battler");
-    expect(testTrainer.belt.includes(testPokemon1)).toBe(false);
-    //console.log(testFire);
-    expect(testTrainer.getPokemon(testFire)).toEqual([
-      {
-        name: "battler",
-        type: "fire",
-        hitPoints: 0,
-        attackDamage: 0,
-        move: "tackle",
-      },
+    // catch pokemons
+    testTrainer.catch(testPokemon1);
+    testTrainer.catch(testPokemon2);
+    testTrainer.catch(testFire1);
+    testTrainer.catch(testFire2);
+    testTrainer.catch(testWater1);
+    testTrainer.catch(testWater2);
+    testTrainer.catch(testGrass1);
+    testTrainer.catch(testGrass2);
+
+    const testPokeball1 = new Pokeballs();
+    const testPokeball2 = new Pokeballs();
+    const testPokeball3 = new Pokeballs();
+    const testPokeball4 = new Pokeballs();
+    const testPokeball5 = new Pokeballs();
+    const testPokeball6 = new Pokeballs();
+    const testPokeball7 = new Pokeballs();
+    const testPokeball8 = new Pokeballs();
+
+    // catch pokemons in pokeballs
+    testPokeball1.throw(testPokemon1);
+    testPokeball2.throw(testPokemon2);
+    testPokeball3.throw(testFire1);
+    testPokeball4.throw(testFire2);
+    testPokeball5.throw(testWater1);
+    testPokeball6.throw(testWater2);
+    testPokeball7.throw(testGrass1);
+    testPokeball8.throw(testGrass2);
+
+    expect(testTrainer.belt).toEqual([
+      testPokeball1,
+      testPokeball2,
+      testPokeball3,
+      testPokeball4,
+      testPokeball5,
+      testPokeball6,
     ]);
+
+    testTrainer.getPokemon("water2");
+    console.log(testTrainer.belt)
+    expect(testTrainer.belt).toEqual([
+      testPokeball1,
+      testPokeball2,
+      testPokeball3,
+      testPokeball4,
+      testPokeball5,
+      new Pokeballs()
+    ]);
+  });
+
+  test.only("Capture pokemon with catch and then release it by calling getPokemon()", () => {
+    const testTrainer = new Trainer();
+
+    const testWater = new Water("water");
+    const testFire = new Fire("fire");
+    const testPokemon = new Pokemon("pok");
+
+    testTrainer.catch(testWater);
+    testTrainer.catch(testFire);
+    testTrainer.catch(testPokemon);
+
+    expect(testTrainer.belt).toEqual([
+      new Pokeballs(testWater),
+      new Pokeballs(testFire),
+      new Pokeballs(testPokemon),
+    ]);
+
+   /* testTrainer.getPokemon("battler");
+    console.log(testTrainer.belt)
+    expect(testTrainer.belt).toEqual([
+      new Pokeballs(),
+      new Pokeballs(testFire),
+      new Pokeballs(testPokemon),
+      new Pokeballs(),
+      new Pokeballs(),
+      new Pokeballs(),
+    ]);
+*/
+    //const testPokemon1 = new Pokemon("battler");
+    //expect(testTrainer.belt.includes(testPokemon1)).toBe(false);
+    //console.log(testFire);
   });
 });

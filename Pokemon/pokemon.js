@@ -122,73 +122,89 @@ class Rattata extends Pokemon {
 
 class Pokeballs {
   constructor() {
-    this.storage = []; // storage can exceed the length of 1
+    this.storage = null;
   }
-  throw(caughtPokemon) {
-    if (caughtPokemon === undefined) {
-      if (this.storage.length === 0) {
-        console.log("Pokeball is empty");
+  throw(newPok) {
+    if (newPok === undefined) {
+      if (this.storage === null) {
+        console.log("No Pokemon in the ball");
       } else {
-        const toBeReturned = this.storage.shift();
-        console.log(`Go Pokemon ${toBeReturned.name}`);
+        const toBeReturned = this.storage;
+        this.storage = null;
+        console.log(`Go ${toBeReturned.name}!`);
         return toBeReturned;
       }
-    } else if (this.storage.length < 1) {
-      this.storage.push(caughtPokemon);
-      console.log(`you caught Pokemon ${caughtPokemon.name}'s name`);
+    } else {
+      if (this.storage === null) {
+        this.storage = newPok;
+        console.log(`You caught ${newPok.name}`);
+      } else {
+        console.log("Cannot Catch! Already Occupied!");
+      }
     }
   }
   isEmpty() {
-    return this.storage.length === 0 ? true : false;
+    return this.storage === null ? true : false;
   }
   contains() {
     if (this.isEmpty()) {
       return "empty ...";
     }
-    return this.storage[0];
+    return this.storage;
   }
 }
-
-class Trainer extends Pokeballs {
+class Trainer {
   constructor() {
-    super();
     this.belt = [];
-  }
-
-  catch(catchPokemon) {
-    if (this.belt.length < 6) {
-      const caughtPokemon = this.throw(catchPokemon); // returns the pokemon in this.storage Pokeball
-      this.belt.push(catchPokemon); // push the returned Pokeball in the belt
+    for (let i = 0; i < 6; i++) {
+      this.belt.push(new Pokeballs());
     }
   }
-
-  getPokemon(newPokemon) {
-    if (this.belt.includes(newPokemon)) {
-      //// do we need to remove the passed pokemon from the Belt????
-      this.throw(newPokemon);
-      return this.storage;
+  catch(newPok) {
+    let catched = false;
+    for (let i = 0; i < 6; i++) {
+      if (this.belt[i].isEmpty()) {
+        this.belt[i].throw(newPok);
+        catched = true;
+        break;
+      }
+    }
+    if (!catched) {
+      console.log("Cannot catch! Belt is full!");
+    }
+  }
+  getPokemon(nameOfPok) {
+    for (let i = 0; i < 6; i++) {
+      if (
+        this.belt[i].storage !== null &&
+        this.belt[i].storage.name === nameOfPok
+      ) {
+        const toBeReturned = this.belt[i].throw();
+        if (!undefined) {
+          return toBeReturned;
+        }
+      }
     }
   }
 }
 
-/*
-## Trainer
+// Battle
+class Battle {
+  constructor(trainer1, trainer2, pokemons1, pokemons2) {
+    this.trainer1 = trainer1;
+    this.trainer2 = trainer2;
+    this.pokemons1 = pokemons1;
+    this.pokemons2 = pokemons2;
 
+    const newPok1 = new Pokemon("Charmander", "fire", 44, 17, "flamethrower");
 
-- A Trainer should have a belt property (you decide an appropriate data type) that should have 6 Pokeballs
+    const newPok2 = new Pokemon("Vaporeon", "water", 70, 19, "hydro pump");
+  }
+  fight(newPok) {
+    newPok2.takeDamage(newPok1.useMove());
+  }
+}
 
-### Methods
-
-- `catch`
-  - takes a Pokemon as an argument
-  - it should use one of its empty Pokeball's `throw` method to catch the Pokemon
-  - should do something if you don't have any empty Pokeballs, what and how is up to you
-- `getPokemon`
-  - takes the name of a Pokemon
-  - will search for the the Pokemon with that name in the belt
-  - use the Pokeball's throw to return that specific Pokemon
-
-*/
 module.exports = {
   Pokemon,
   Fire,

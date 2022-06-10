@@ -9,6 +9,7 @@ const {
   Rattata,
   Pokeballs,
   Trainer,
+  Battle,
 } = require("../pokemon.js");
 
 describe("Pokemon", () => {
@@ -412,3 +413,102 @@ describe("Trainer Class: ", () => {
     expect(testTrainer.getPokemon("water")).toEqual(testWater);
   });
 });
+
+describe("Battle Class: ", () => {
+  describe("Testing properties:", () => {
+    test("Battle has a trainer1 property", () => {
+      const testBattle = new Battle(
+        new Trainer(),
+        new Trainer(),
+        new Pokemon(),
+        new Pokemon()
+      );
+      expect(typeof testBattle.trainer1).toBe("object");
+    });
+    test("Battle has a trainer2 property", () => {
+      const testBattle = new Battle(
+        new Trainer(),
+        new Trainer(),
+        new Pokemon(),
+        new Pokemon()
+      );
+      expect(typeof testBattle.trainer2).toBe("object");
+    });
+    test("Battle has a pokemon1 property", () => {
+      const testBattle = new Battle(
+        new Trainer(),
+        new Trainer(),
+        new Pokemon(),
+        new Pokemon()
+      );
+      expect(typeof testBattle.pokemon1).toBe("object");
+    });
+    test("Battle has a pokemon2 property", () => {
+      const testBattle = new Battle(
+        new Trainer(),
+        new Trainer(),
+        new Pokemon(),
+        new Pokemon()
+      );
+      expect(typeof testBattle.pokemon2).toBe("object");
+    });
+  });
+
+  describe("Testing Fight():",()=>{
+    test("Fight is a function: ",()=>{
+      const testBattle = new Battle();
+      expect(typeof testBattle.fight).toBe("function");
+    })
+    test("takes a pokemon and deducts its damage points from the hitpoints of defending pokemon ", () => {
+      
+      const testPok1 = new Pokemon();
+      testPok1.attackDamage = 5;
+      testPok1.hitPoints = 30;
+
+
+      const testPok2 = new Pokemon();
+      testPok2.attackDamage = 10;
+      testPok2.hitPoints = 20;
+
+      const testBattle = new Battle(new Trainer(), new Trainer(), testPok1, testPok2);
+      testBattle.fight();
+      expect(testPok2.hitPoints).toBe(15);
+    });
+    test("if defender is strong against attacker, multiply damage by 0.75, else multiply damage by 1.25", () => {
+      const testPok1 = new Fire();
+      testPok1.attackDamage = 5;
+      testPok1.hitPoints = 30;
+
+      const testPok2 = new Grass();
+      testPok2.attackDamage = 10;
+      testPok2.hitPoints = 20;
+
+      const testBattle = new Battle(
+        new Trainer(),
+        new Trainer(),
+        testPok1,
+        testPok2
+      );
+      testBattle.fight();
+      expect(testPok2.hitPoints).toBe(13.75);
+    });
+  })
+});
+
+
+describe.only("initiate()",()=>{
+  test("should initiate and keep them fighting until one of them faints", ()=>{
+     const testPok1 = new Fire("fiery battler");
+     testPok1.attackDamage = 10;
+     testPok1.hitPoints = 30;
+
+     const testPok2 = new Grass("grassy battler");
+     testPok2.attackDamage = 3;
+     testPok2.hitPoints = 10;
+
+     const testBattle = new Battle(new Trainer(), new Trainer(), testPok1, testPok2);
+
+     testBattle.initiate();
+     console.log(testPok1)
+  })
+})

@@ -27,7 +27,7 @@ class Pokemon {
   }
 
   hasFainted() {
-    return this.hitPoints === 0 ? true : false;
+    return this.hitPoints <= 0 ? true : false;
   }
 }
 
@@ -175,22 +175,64 @@ class Trainer {
     }
   }
 }
-
 // Battle
 class Battle {
-  constructor(trainer1, trainer2, pokemons1, pokemons2) {
+  constructor(trainer1, trainer2, pokemon1, pokemon2) {
     this.trainer1 = trainer1;
     this.trainer2 = trainer2;
-    this.pokemons1 = pokemons1;
-    this.pokemons2 = pokemons2;
-
-    const newPok1 = new Pokemon("Charmander", "fire", 44, 17, "flamethrower");
-
-    const newPok2 = new Pokemon("Vaporeon", "water", 70, 19, "hydro pump");
+    this.pokemon1 = pokemon1;
+    this.pokemon2 = pokemon2;
   }
-  fight(newPok) {
-    newPok2.takeDamage(newPok1.useMove());
+
+  initiate() {
+    let i = 0;
+    while (this.fight(i)) {
+      i++;
+    }
+    console.log("Fight's over");
   }
+
+  fight(turn) {
+    console.log(turn, " << turn");
+    if (turn % 2 === 0) {
+      // deal the damage
+      let damage = this.pokemon1.attackDamage;
+      if (this.pokemon2.isEffectiveAgainst(this.pokemon1)) {
+        damage *= 0.75;
+      }
+      if (this.pokemon2.isWeakTo(this.pokemon1)) {
+        damage *= 1.25;
+      }
+      this.pokemon2.takeDamage(damage);
+
+      // attack message
+      //console.log();
+      //if the defending Pokemon faints (depletes all hit points), the attacker wins.​
+      if (this.pokemon2.hasFainted()) {
+        console.log(this.pokemon2.name + " has lost!");
+        return false;
+      }
+    } else {
+      let damage = this.pokemon2.attackDamage;
+      if (this.pokemon1.isEffectiveAgainst(this.pokemon2)) {
+        damage *= 0.75;
+      }
+      if (this.pokemon1.isWeakTo(this.pokemon2)) {
+        damage *= 1.25;
+      }
+      this.pokemon1.takeDamage(damage);
+
+      // attack message
+      //console.log();
+      //if the defending Pokemon faints (depletes all hit points), the attacker wins.​
+      if (this.pokemon1.hasFainted()) {
+        console.log(this.pokemon1.name + " has lost!");
+        return false;
+      }
+    }
+    return true;
+  }
+  // The message will vary depending on the defender's weakness/strength.
 }
 
 module.exports = {
@@ -204,4 +246,5 @@ module.exports = {
   Rattata,
   Pokeballs,
   Trainer,
+  Battle,
 };

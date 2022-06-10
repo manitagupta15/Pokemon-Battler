@@ -206,7 +206,6 @@ class Battle {
       this.pokemon2.takeDamage(damage);
 
       // attack message
-      //console.log();
       //if the defending Pokemon faints (depletes all hit points), the attacker wins.​
       if (this.pokemon2.hasFainted()) {
         console.log(this.pokemon2.name + " has lost!");
@@ -223,7 +222,6 @@ class Battle {
       this.pokemon1.takeDamage(damage);
 
       // attack message
-      //console.log();
       //if the defending Pokemon faints (depletes all hit points), the attacker wins.​
       if (this.pokemon1.hasFainted()) {
         console.log(this.pokemon1.name + " has lost!");

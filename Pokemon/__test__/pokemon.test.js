@@ -476,6 +476,8 @@ describe("Battle Class: ", () => {
       );
       testBattle.fight(1);
       expect(testPok2.hitPoints).toBe(20);
+      testBattle.fight(0);
+      expect(testPok2.hitPoints).toBe(15);
     });
     test("if defender is strong against attacker, multiply damage by 0.75, else multiply damage by 1.25", () => {
       const testPok1 = new Fire();

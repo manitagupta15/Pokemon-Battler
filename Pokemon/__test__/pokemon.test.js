@@ -517,6 +517,8 @@ describe("initiate()", () => {
       testPok2
     );
 
+    
+
     testBattle.initiate();
     console.log(testPok1);
   });

@@ -382,70 +382,7 @@ describe("Trainer Class: ", () => {
     expect(typeof testTrainer.getPokemon).toBe("function");
   });
 
-  test("trainer class has a method getPokemon() that take a Pokemon as an argument, passed that Pokemon in throw() method if passed Pokemon is Present in the Belt ", () => {
-    const testTrainer = new Trainer();
-
-    // pokemons
-    const testPokemon1 = new Pokemon("pok1");
-    const testPokemon2 = new Pokemon("pok2");
-    const testFire1 = new Fire("fire1");
-    const testFire2 = new Fire("fire2");
-    const testWater1 = new Water("water1");
-    const testWater2 = new Water("water2");
-    const testGrass1 = new Grass("grass1");
-    const testGrass2 = new Grass("grass2");
-
-    // catch pokemons
-    testTrainer.catch(testPokemon1);
-    testTrainer.catch(testPokemon2);
-    testTrainer.catch(testFire1);
-    testTrainer.catch(testFire2);
-    testTrainer.catch(testWater1);
-    testTrainer.catch(testWater2);
-    testTrainer.catch(testGrass1);
-    testTrainer.catch(testGrass2);
-
-    const testPokeball1 = new Pokeballs();
-    const testPokeball2 = new Pokeballs();
-    const testPokeball3 = new Pokeballs();
-    const testPokeball4 = new Pokeballs();
-    const testPokeball5 = new Pokeballs();
-    const testPokeball6 = new Pokeballs();
-    const testPokeball7 = new Pokeballs();
-    const testPokeball8 = new Pokeballs();
-
-    // catch pokemons in pokeballs
-    testPokeball1.throw(testPokemon1);
-    testPokeball2.throw(testPokemon2);
-    testPokeball3.throw(testFire1);
-    testPokeball4.throw(testFire2);
-    testPokeball5.throw(testWater1);
-    testPokeball6.throw(testWater2);
-    testPokeball7.throw(testGrass1);
-    testPokeball8.throw(testGrass2);
-
-    expect(testTrainer.belt).toEqual([
-      testPokeball1,
-      testPokeball2,
-      testPokeball3,
-      testPokeball4,
-      testPokeball5,
-      testPokeball6,
-    ]);
-
-    testTrainer.getPokemon("water2");
-    console.log(testTrainer.belt);
-    expect(testTrainer.belt).toEqual([
-      testPokeball1,
-      testPokeball2,
-      testPokeball3,
-      testPokeball4,
-      testPokeball5,
-      new Pokeballs(),
-    ]);
-  });
-
-  test.only("Capture pokemon with catch and then release it by calling getPokemon()", () => {
+  test("test the catch() method, it catches a pokemon and stores in the belt, belt size can be more than 6", () => {
     const testTrainer = new Trainer();
 
     const testWater = new Water("water");
@@ -453,28 +390,25 @@ describe("Trainer Class: ", () => {
     const testPokemon = new Pokemon("pok");
 
     testTrainer.catch(testWater);
-    //testTrainer.catch(testFire);
-    //testTrainer.catch(testPokemon);
+    testTrainer.catch(testFire);
+    testTrainer.catch(testPokemon);
 
-   // const Pk = new Pokeballs();
-    console.log(testTrainer.belt);
-   // Pk.throw(testWater);
+    const Pk1 = new Pokeballs();
+    Pk1.throw(testWater);
 
-    expect(testTrainer.belt).toEqual(testWater);
+    const Pk2 = new Pokeballs();
+    Pk2.throw(testFire);
+    const Pk3 = new Pokeballs();
+    Pk3.throw(testPokemon);
 
-    /* testTrainer.getPokemon("battler");
-    console.log(testTrainer.belt)
-    expect(testTrainer.belt).toEqual([
-      new Pokeballs(),
-      new Pokeballs(testFire),
-      new Pokeballs(testPokemon),
-      new Pokeballs(),
-      new Pokeballs(),
-      new Pokeballs(),
-    ]);
-*/
-    //const testPokemon1 = new Pokemon("battler");
-    //expect(testTrainer.belt.includes(testPokemon1)).toBe(false);
-    //console.log(testFire);
+    expect(testTrainer.belt).toEqual([Pk1, Pk2, Pk3]);
+  });
+
+  test("trainer class has a method getPokemon() that take a Pokemon as an argument, passed that Pokemon in throw() method if passed Pokemon is Present in the Belt ", () => {
+    const testTrainer = new Trainer();
+    const testWater = new Water("water");
+    testTrainer.catch(testWater);
+
+    expect(testTrainer.getPokemon("water")).toEqual(testWater);
   });
 });

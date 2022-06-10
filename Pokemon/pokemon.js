@@ -156,32 +156,21 @@ class Pokeballs {
 class Trainer {
   constructor() {
     this.belt = [];
-    /*  for (let i = 0; i < 6; i++) {
-      this.belt.push(new Pokeballs());
-    }*/
   }
   catch(newPok) {
-    // let catched = false;
-    //for (let i = 0; i < 6; i++) {
     if (this.belt.length < 6) this.belt.push(new Pokeballs());
+
     for (let i = 0; i < this.belt.length; i++) {
       this.belt[i].throw(newPok);
-      // catched = true;
     }
     if (this.belt.length === 6) {
       console.log("Cannot catch! Belt is full!");
     }
   }
   getPokemon(nameOfPok) {
-    for (let i = 0; i < 6; i++) {
-      if (
-        this.belt[i].storage !== null &&
-        this.belt[i].storage.name === nameOfPok
-      ) {
-        const toBeReturned = this.belt[i].throw();
-        if (!undefined) {
-          return toBeReturned;
-        }
+    for (let i = 0; i < this.belt.length; i++) {
+      if (this.belt[i].storage.name === nameOfPok) {
+        return this.belt[i].throw();
       }
     }
   }

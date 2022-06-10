@@ -454,25 +454,28 @@ describe("Battle Class: ", () => {
     });
   });
 
-  describe("Testing Fight():",()=>{
-    test("Fight is a function: ",()=>{
+  describe("Testing Fight():", () => {
+    test("Fight is a function: ", () => {
       const testBattle = new Battle();
       expect(typeof testBattle.fight).toBe("function");
-    })
+    });
     test("takes a pokemon and deducts its damage points from the hitpoints of defending pokemon ", () => {
-      
       const testPok1 = new Pokemon();
       testPok1.attackDamage = 5;
       testPok1.hitPoints = 30;
-
 
       const testPok2 = new Pokemon();
       testPok2.attackDamage = 10;
       testPok2.hitPoints = 20;
 
-      const testBattle = new Battle(new Trainer(), new Trainer(), testPok1, testPok2);
-      testBattle.fight();
-      expect(testPok2.hitPoints).toBe(15);
+      const testBattle = new Battle(
+        new Trainer(),
+        new Trainer(),
+        testPok1,
+        testPok2
+      );
+      testBattle.fight(1);
+      expect(testPok2.hitPoints).toBe(20);
     });
     test("if defender is strong against attacker, multiply damage by 0.75, else multiply damage by 1.25", () => {
       const testPok1 = new Fire();
@@ -489,26 +492,30 @@ describe("Battle Class: ", () => {
         testPok1,
         testPok2
       );
-      testBattle.fight();
+      testBattle.fight(0);
       expect(testPok2.hitPoints).toBe(13.75);
     });
-  })
+  });
 });
 
+describe("initiate()", () => {
+  test("should initiate and keep them fighting until one of them faints", () => {
+    const testPok1 = new Fire("fiery battler");
+    testPok1.attackDamage = 10;
+    testPok1.hitPoints = 30;
 
-describe.only("initiate()",()=>{
-  test("should initiate and keep them fighting until one of them faints", ()=>{
-     const testPok1 = new Fire("fiery battler");
-     testPok1.attackDamage = 10;
-     testPok1.hitPoints = 30;
+    const testPok2 = new Grass("grassy battler");
+    testPok2.attackDamage = 3;
+    testPok2.hitPoints = 10;
 
-     const testPok2 = new Grass("grassy battler");
-     testPok2.attackDamage = 3;
-     testPok2.hitPoints = 10;
+    const testBattle = new Battle(
+      new Trainer(),
+      new Trainer(),
+      testPok1,
+      testPok2
+    );
 
-     const testBattle = new Battle(new Trainer(), new Trainer(), testPok1, testPok2);
-
-     testBattle.initiate();
-     console.log(testPok1)
-  })
-})
+    testBattle.initiate();
+    console.log(testPok1);
+  });
+});

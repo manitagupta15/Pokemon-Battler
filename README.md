@@ -26,9 +26,8 @@ Below you will find a plan of what structures we think will be useful for the ga
   - `hitPoints`: the amount of health the Pokemon has, represented as a number
   - `attackDamage`: the amount of damage a Pokemon can inflict (should be a number)
   - `move`: This is the move the Pokemon does when battling, this should default to "tackle"
-    
- 
- ### Methods
+
+### Methods
 
 - `isEffectiveAgainst`
   - this will take as an argument a Pokemon and return a Boolean if the Pokemon is effective against the given Pokemon, "normal" Pokemon are not effective against anything
@@ -36,7 +35,7 @@ Below you will find a plan of what structures we think will be useful for the ga
   - this will take as an argument a Pokemon and return a Boolean if this pokemon is weak to the given Pokemon
   - "normal" Pokemon are not weak to anything
 - `takeDamage`
-  - will take a number and reduce its health by the number given 
+  - will take a number and reduce its health by the number given
 - `useMove`
   - will return the Pokemon's attackDamage
   - should also console log something like "PokemonX used PokemonX's move"
@@ -44,10 +43,8 @@ Below you will find a plan of what structures we think will be useful for the ga
 - `hasFainted`
   - When a Pokemon's health is reduced to 0 they faint
   - hasFainted will return a Boolean based on whether the Pokemon has fainted
-    
 
 ## Pokemon Types (3 classes that should extend Pokemon) -> Fire, Water, Grass
-
 
 - `fire` pokemon are strong against grass, and weak against water.
 - `grass` pokemon are strong against water, and weak against fire.
@@ -68,7 +65,6 @@ Below you will find a plan of what structures we think will be useful for the ga
 
 ## Pokeball
 
-
 ​
 `Pokeballs` are the containers for Pokemon. They are used in the game to catch pokemon and to release the Pokemon for battle.
 
@@ -83,8 +79,8 @@ Pokeball behaviours include:
 ### Methods
 
 - `throw`
-  -  can take a `Pokemon` as an argument. If the pokeball is empty it will capture the passed pokemon. If it isn't empty the user should not be allowed to capture a pokemon with it! The `throw` method should also console log something like ("you caught pokemonX's name")
-  -  Additionally the method can be invoked with no argument. In this case the method should return the stored Pokemon (ready for battle). The `throw` method should  console log something like ("GO pokemonX's name!!") in this scenario. If the ball is empty then the user should be informed.
+  - can take a `Pokemon` as an argument. If the pokeball is empty it will capture the passed pokemon. If it isn't empty the user should not be allowed to capture a pokemon with it! The `throw` method should also console log something like ("you caught pokemonX's name")
+  - Additionally the method can be invoked with no argument. In this case the method should return the stored Pokemon (ready for battle). The `throw` method should console log something like ("GO pokemonX's name!!") in this scenario. If the ball is empty then the user should be informed.
     ​
 - `isEmpty`
   - should return a Boolean representing whether or not a Pokemon is stored inside it
@@ -95,7 +91,6 @@ Pokeball behaviours include:
     ​
 
 ## Trainer
-
 
 - A Trainer should have a belt property (you decide an appropriate data type) that should have 6 Pokeballs
 
@@ -112,7 +107,6 @@ Pokeball behaviours include:
     ​
 
 ## Battle
-
 
 - Finally, you will need a way to battle the Pokemon.
 - The battle should take two trainers and the names of the Pokemon they wish to battle.

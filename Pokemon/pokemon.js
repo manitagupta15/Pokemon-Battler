@@ -156,20 +156,19 @@ class Pokeballs {
 class Trainer {
   constructor() {
     this.belt = [];
-    for (let i = 0; i < 6; i++) {
+    /*  for (let i = 0; i < 6; i++) {
       this.belt.push(new Pokeballs());
-    }
+    }*/
   }
   catch(newPok) {
-    let catched = false;
-    for (let i = 0; i < 6; i++) {
-      if (this.belt[i].isEmpty()) {
-        this.belt[i].throw(newPok);
-        catched = true;
-        break;
-      }
+    // let catched = false;
+    //for (let i = 0; i < 6; i++) {
+    if (this.belt.length < 6) this.belt.push(new Pokeballs());
+    for (let i = 0; i < this.belt.length; i++) {
+      this.belt[i].throw(newPok);
+      // catched = true;
     }
-    if (!catched) {
+    if (this.belt.length === 6) {
       console.log("Cannot catch! Belt is full!");
     }
   }

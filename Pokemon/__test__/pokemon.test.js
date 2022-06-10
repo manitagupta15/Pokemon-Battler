@@ -434,14 +434,14 @@ describe("Trainer Class: ", () => {
     ]);
 
     testTrainer.getPokemon("water2");
-    console.log(testTrainer.belt)
+    console.log(testTrainer.belt);
     expect(testTrainer.belt).toEqual([
       testPokeball1,
       testPokeball2,
       testPokeball3,
       testPokeball4,
       testPokeball5,
-      new Pokeballs()
+      new Pokeballs(),
     ]);
   });
 
@@ -453,16 +453,16 @@ describe("Trainer Class: ", () => {
     const testPokemon = new Pokemon("pok");
 
     testTrainer.catch(testWater);
-    testTrainer.catch(testFire);
-    testTrainer.catch(testPokemon);
+    //testTrainer.catch(testFire);
+    //testTrainer.catch(testPokemon);
 
-    expect(testTrainer.belt).toEqual([
-      new Pokeballs(testWater),
-      new Pokeballs(testFire),
-      new Pokeballs(testPokemon),
-    ]);
+   // const Pk = new Pokeballs();
+    console.log(testTrainer.belt);
+   // Pk.throw(testWater);
 
-   /* testTrainer.getPokemon("battler");
+    expect(testTrainer.belt).toEqual(testWater);
+
+    /* testTrainer.getPokemon("battler");
     console.log(testTrainer.belt)
     expect(testTrainer.belt).toEqual([
       new Pokeballs(),

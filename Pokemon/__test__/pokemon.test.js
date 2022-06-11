@@ -47,10 +47,11 @@ describe("Pokemon", () => {
     const testPokemon1 = new Pokemon("Battler");
     const testPokemon2 = new Pokemon("Bettle");
     testPokemon2.type = "Not Normal";
-    expect(testPokemon1.isEffectiveAgainst(testPokemon2)).toBe(true);
-
-    testPokemon2.type = "normal";
     expect(testPokemon1.isEffectiveAgainst(testPokemon2)).toBe(false);
+
+    testPokemon1.type = " Not Normal";
+
+    expect(testPokemon1.isEffectiveAgainst(testPokemon2)).toBe(true);
   });
 
   test("check if Pokemon class has a isWeakTo() method", () => {
@@ -61,11 +62,12 @@ describe("Pokemon", () => {
   test("isWeakTo() method returns Boolean ", () => {
     const testPokemon1 = new Pokemon("Battler");
     const testPokemon2 = new Pokemon("Beetle");
-    testPokemon2.type = "Not Normal";
-    expect(testPokemon1.isWeakTo(testPokemon2)).toBe(true);
+    testPokemon1.type = "normal";
 
-    testPokemon2.type = "normal";
+    testPokemon2.type = "Not Normal";
     expect(testPokemon1.isWeakTo(testPokemon2)).toBe(false);
+
+    expect(testPokemon2.isWeakTo(testPokemon1)).toBe(true);
   });
 
   test("check if Pokemon class has a takeDamage() method", () => {
@@ -441,7 +443,7 @@ describe("Battle Class: ", () => {
         new Pokemon(),
         new Pokemon()
       );
-      expect(typeof testBattle.pokemon1).toBe("object");
+      expect(typeof testBattle.TrainerPokemon1).toBe("object");
     });
     test("Battle has a pokemon2 property", () => {
       const testBattle = new Battle(
@@ -450,7 +452,7 @@ describe("Battle Class: ", () => {
         new Pokemon(),
         new Pokemon()
       );
-      expect(typeof testBattle.pokemon2).toBe("object");
+      expect(typeof testBattle.TrainerPokemon2).toBe("object");
     });
   });
 
@@ -459,65 +461,72 @@ describe("Battle Class: ", () => {
       const testBattle = new Battle();
       expect(typeof testBattle.fight).toBe("function");
     });
-    test("takes a pokemon and deducts its damage points from the hitpoints of defending pokemon ", () => {
-      const testPok1 = new Pokemon();
-      testPok1.attackDamage = 5;
-      testPok1.hitPoints = 30;
+    test("takes a pokemon and deducts its damage points from the hitpoints of defending pokemon, if attacker is stronger than defender, defender faints and attacker wins ", () => {
+      //define input Trainers
+      const trainer1 = new Trainer();
+      const trainer2 = new Trainer();
 
-      const testPok2 = new Pokemon();
-      testPok2.attackDamage = 10;
-      testPok2.hitPoints = 20;
+      //define the Pokemons
+      const testFire1 = new Fire("fire1", 80, 30);
+      const testFire2 = new Fire("fire2", 75, 45);
+      const testWater1 = new Water("water1", 30, 80);
+      const testWater2 = new Water("water2", 25, 80);
+      const testGrass1 = new Grass("grass1", 70, 45);
+      const testGrass2 = new Grass("grass2", 75, 25);
 
-      const testBattle = new Battle(
-        new Trainer(),
-        new Trainer(),
-        testPok1,
-        testPok2
-      );
-      testBattle.fight(1);
-      expect(testPok2.hitPoints).toBe(20);
-      testBattle.fight(0);
-      expect(testPok2.hitPoints).toBe(15);
+      // store pokemons in trainers belt
+      trainer1.catch(testFire1);
+      trainer1.catch(testWater1);
+      trainer1.catch(testGrass1);
+
+      trainer2.catch(testFire2);
+      trainer2.catch(testWater2);
+      trainer2.catch(testGrass2);
+
+      const testBattle = new Battle(trainer1, trainer2, testFire1, testWater2);
+      //const testFire1 = new Fire("fire1", 80, 30);
+      //const testWater2 = new Water("water2", 25, 80);
+
+      testBattle.fight();
+      expect(testFire1.hitPoints).toBe(-20);
+      expect(testWater2.hitPoints).toBe(2.5); ///(25 - 0.75 * 30);
+      expect(testWater2.hasFainted()).toBe(false);
+      expect(testFire1.hasFainted()).toBe(true);
     });
-    test("if defender is strong against attacker, multiply damage by 0.75, else multiply damage by 1.25", () => {
-      const testPok1 = new Fire();
-      testPok1.attackDamage = 5;
-      testPok1.hitPoints = 30;
 
-      const testPok2 = new Grass();
-      testPok2.attackDamage = 10;
-      testPok2.hitPoints = 20;
+    test("if defender is strong against attacker, attacker faint and defender wins", () => {
+      //define input Trainers
+      const trainer1 = new Trainer();
+      const trainer2 = new Trainer();
 
-      const testBattle = new Battle(
-        new Trainer(),
-        new Trainer(),
-        testPok1,
-        testPok2
-      );
-      testBattle.fight(0);
-      expect(testPok2.hitPoints).toBe(13.75);
+      //define the Pokemons
+      const testFire1 = new Fire("fire1", 80, 30);
+      const testWater2 = new Water("water2", 25, 80);
+      const testGrass1 = new Grass("grass1", 70, 45);
+      const testGrass2 = new Grass("grass2", 75, 25);
+
+      // store pokemons in trainers belt
+      trainer1.catch(testFire1);
+      trainer1.catch(testWater2);
+      trainer1.catch(testGrass1);
+
+      trainer2.catch(testFire1);
+      trainer2.catch(testWater2);
+      trainer2.catch(testGrass2);
+
+      const testBattle = new Battle(trainer1, trainer2, testWater2, testFire1);
+      //const testFire1 = new Fire("fire1", 80, 30);
+      //const testWater2 = new Water("water2", 25, 80);
+
+      /* takeDamage(healthDamage) {
+    this.hitPoints -= healthDamage;
+  }
+*/
+      testBattle.fight();
+      expect(testWater2.hitPoints).toBe(25);
+      expect(testGrass1.hitPoints).toBe(70); ///(25 - 0.75 * 30);
+      expect(testFire1.hasFainted()).toBe(true);
+      expect(testWater2.hasFainted()).toBe(false);
     });
-  });
-});
-
-describe("initiate()", () => {
-  test("should initiate and keep them fighting until one of them faints", () => {
-    const testPok1 = new Fire("fiery battler");
-    testPok1.attackDamage = 10;
-    testPok1.hitPoints = 30;
-
-    const testPok2 = new Grass("grassy battler");
-    testPok2.attackDamage = 3;
-    testPok2.hitPoints = 10;
-
-    const testBattle = new Battle(
-      new Trainer(),
-      new Trainer(),
-      testPok1,
-      testPok2
-    );
-
-    testBattle.initiate();
-    console.log(testPok1);
   });
 });

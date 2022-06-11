@@ -1,18 +1,18 @@
 class Pokemon {
-  constructor(name) {
+  constructor(name, hitPoints = 0, attackDamage = 0) {
     this.name = name;
     this.type = "normal";
-    this.hitPoints = 0;
-    this.attackDamage = 0;
+    this.hitPoints = hitPoints;
+    this.attackDamage = attackDamage;
     this.move = "tackle";
   }
 
   isEffectiveAgainst(newPokemon) {
-    return "normal" !== newPokemon.type ? true : false;
+    return this.type !== "normal" ? true : false;
   }
 
   isWeakTo(newPokemon) {
-    return "normal" !== newPokemon.type ? true : false;
+    return this.type !== "normal" ? true : false;
   }
 
   takeDamage(healthDamage) {
@@ -32,8 +32,10 @@ class Pokemon {
 }
 
 class Fire extends Pokemon {
-  constructor(name) {
+  constructor(name, hitPoints = 0, attackDamage = 0) {
     super(name);
+    this.hitPoints = hitPoints;
+    this.attackDamage = attackDamage;
     this.type = "fire";
   }
   isEffectiveAgainst(newPokemon) {
@@ -53,8 +55,10 @@ class Fire extends Pokemon {
   }
 }
 class Grass extends Pokemon {
-  constructor(name) {
+  constructor(name, hitPoints = 0, attackDamage = 0) {
     super(name);
+    this.hitPoints = hitPoints;
+    this.attackDamage = attackDamage;
     this.type = "grass";
   }
   isEffectiveAgainst(newPokemon) {
@@ -73,8 +77,10 @@ class Grass extends Pokemon {
   }
 }
 class Water extends Pokemon {
-  constructor(name) {
+  constructor(name, hitPoints = 0, attackDamage = 0) {
     super(name);
+    this.hitPoints = hitPoints;
+    this.attackDamage = attackDamage;
     this.type = "water";
   }
   isEffectiveAgainst(newPokemon) {
@@ -94,29 +100,37 @@ class Water extends Pokemon {
 }
 
 class Charmander extends Fire {
-  constructor(name) {
+  constructor(name, hitPoints = 0, attackDamage = 0) {
     super(name);
+    this.hitPoints = this.hitPoints;
+    this.attackDamage = this.attackDamage;
     this.move = "ember";
   }
 }
 
 class Squirtle extends Water {
-  constructor(name) {
+  constructor(name, hitPoints = 0, attackDamage = 0) {
     super(name);
+    this.hitPoints = hitPoints;
+    this.attackDamage = attackDamage;
     this.move = "water gun";
   }
 }
 
 class Bulbasaur extends Grass {
-  constructor(name) {
+  constructor(name, hitPoints = 0, attackDamage = 0) {
     super(name);
+    this.hitPoints = hitPoints;
+    this.attackDamage = attackDamage;
     this.move = "vine whip";
   }
 }
 
 class Rattata extends Pokemon {
-  constructor(name) {
+  constructor(name, hitPoints = 0, attackDamage = 0) {
     super(name);
+    this.hitPoints = hitPoints;
+    this.attackDamage = attackDamage;
   }
 }
 
@@ -170,6 +184,7 @@ class Trainer {
   getPokemon(nameOfPok) {
     for (let i = 0; i < this.belt.length; i++) {
       if (this.belt[i].storage.name === nameOfPok) {
+        console.log("name of pokemon", nameOfPok);
         return this.belt[i].throw();
       }
     }
@@ -177,58 +192,61 @@ class Trainer {
 }
 // Battle
 class Battle {
-  constructor(trainer1, trainer2, pokemon1, pokemon2) {
+  constructor(trainer1, trainer2, pokemons1, pokemons2) {
     this.trainer1 = trainer1;
     this.trainer2 = trainer2;
-    this.pokemon1 = pokemon1;
-    this.pokemon2 = pokemon2;
+    this.TrainerPokemon1 = pokemons1;
+    this.TrainerPokemon2 = pokemons2;
+    this.i = 0;
   }
 
-  initiate() {
+  fight() {
+    //attacker
+    const pokemon1 = this.trainer1.getPokemon(this.TrainerPokemon1.name);
+    //defender
+    const pokemon2 = this.trainer2.getPokemon(this.TrainerPokemon2.name);
+
     let i = 0;
-    while (this.fight(i)) {
-      i++;
+    let j = true;
+    while (j) {
+      console.log(this.i, " << turn");
+
+      if (this.i % 2 === 0) {
+        // deal the damage
+
+        if (pokemon2.isEffectiveAgainst(pokemon1)) {
+          pokemon2.takeDamage(0.75 * pokemon1.attackDamage);
+          console.log(`Pokemon ${pokemon2.name} used ${pokemon2.move}`);
+        } else if (pokemon2.isWeakTo(pokemon1)) {
+          pokemon2.takeDamage(1.25 * pokemon1.attackDamage);
+          console.log(`Pokemon ${pokemon2.name} used ${pokemon2.move}`);
+        }
+
+        // attack message
+        //if the defending Pokemon faints (depletes all hit points), the attacker wins.​
+        if (pokemon2.hasFainted()) {
+          console.log(pokemon2.name + " has Fainted and lost!");
+          j = false;
+          //  return j;
+        } // else return j;
+      } else {
+        if (pokemon1.isEffectiveAgainst(pokemon2)) {
+          pokemon1.takeDamage(0.75 * pokemon2.attackDamage);
+          console.log(`Pokemon ${pokemon1.name} used ${pokemon1.move}`);
+        } else if (pokemon1.isWeakTo(pokemon2)) {
+          pokemon1.takeDamage(1.25 * pokemon2.attackDamage);
+          console.log(`Pokemon ${pokemon2.name} used ${pokemon2.move}`);
+        }
+
+        // attack message
+        //if the defending Pokemon faints (depletes all hit points), the attacker wins.​
+        if (pokemon1.hasFainted()) {
+          console.log(pokemon1.name + " has lost!");
+          j = false;
+        }
+      }
+      this.i++;
     }
-    console.log("Fight's over");
-  }
-
-  fight(turn) {
-    console.log(turn, " << turn");
-    if (turn % 2 === 0) {
-      // deal the damage
-      let damage = this.pokemon1.attackDamage;
-      if (this.pokemon2.isEffectiveAgainst(this.pokemon1)) {
-        damage *= 0.75;
-      }
-      if (this.pokemon2.isWeakTo(this.pokemon1)) {
-        damage *= 1.25;
-      }
-      this.pokemon2.takeDamage(damage);
-
-      // attack message
-      //if the defending Pokemon faints (depletes all hit points), the attacker wins.​
-      if (this.pokemon2.hasFainted()) {
-        console.log(this.pokemon2.name + " has lost!");
-        return false;
-      }
-    } else {
-      let damage = this.pokemon2.attackDamage;
-      if (this.pokemon1.isEffectiveAgainst(this.pokemon2)) {
-        damage *= 0.75;
-      }
-      if (this.pokemon1.isWeakTo(this.pokemon2)) {
-        damage *= 1.25;
-      }
-      this.pokemon1.takeDamage(damage);
-
-      // attack message
-      //if the defending Pokemon faints (depletes all hit points), the attacker wins.​
-      if (this.pokemon1.hasFainted()) {
-        console.log(this.pokemon1.name + " has lost!");
-        return false;
-      }
-    }
-    return true;
   }
   // The message will vary depending on the defender's weakness/strength.
 }

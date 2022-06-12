@@ -488,7 +488,7 @@ describe("Battle Class: ", () => {
       //const testWater2 = new Water("water2", 25, 80);
 
       testBattle.fight();
-      expect(testFire1.hitPoints).toBe(-20);
+      expect(testFire1.hitPoints).toBe(-20); ///(80 - 1.25 * 80);
       expect(testWater2.hitPoints).toBe(2.5); ///(25 - 0.75 * 30);
       expect(testWater2.hasFainted()).toBe(false);
       expect(testFire1.hasFainted()).toBe(true);
@@ -524,7 +524,7 @@ describe("Battle Class: ", () => {
 */
       testBattle.fight();
       expect(testWater2.hitPoints).toBe(25);
-      expect(testGrass1.hitPoints).toBe(70); ///(25 - 0.75 * 30);
+      expect(testFire1.hitPoints).toBe(-20); ///(80 - 1.25 * 80);
       expect(testFire1.hasFainted()).toBe(true);
       expect(testWater2.hasFainted()).toBe(false);
     });

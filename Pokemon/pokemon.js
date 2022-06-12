@@ -220,7 +220,7 @@ class Battle {
         } else if (pokemon2.isWeakTo(pokemon1)) {
           pokemon2.takeDamage(1.25 * pokemon1.attackDamage);
           console.log(`Pokemon ${pokemon2.name} used ${pokemon2.move}`);
-        }
+        } else pokemon2.takeDamage(pokemon1.attackDamage);
 
         // attack message
         //if the defending Pokemon faints (depletes all hit points), the attacker wins.​
@@ -236,7 +236,7 @@ class Battle {
         } else if (pokemon1.isWeakTo(pokemon2)) {
           pokemon1.takeDamage(1.25 * pokemon2.attackDamage);
           console.log(`Pokemon ${pokemon2.name} used ${pokemon2.move}`);
-        }
+        } else pokemon1.takeDamage(pokemon2.attackDamage);
 
         // attack message
         //if the defending Pokemon faints (depletes all hit points), the attacker wins.​

@@ -8,11 +8,11 @@ class Pokemon {
   }
 
   isEffectiveAgainst(newPokemon) {
-    return this.type !== "normal" ? true : false;
+    return newPokemon.type !== "normal" ? true : false;
   }
 
   isWeakTo(newPokemon) {
-    return this.type !== "normal" ? true : false;
+    return newPokemon.type !== "normal" ? true : false;
   }
 
   takeDamage(healthDamage) {

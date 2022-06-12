@@ -47,11 +47,12 @@ describe("Pokemon", () => {
     const testPokemon1 = new Pokemon("Battler");
     const testPokemon2 = new Pokemon("Bettle");
     testPokemon2.type = "Not Normal";
-    expect(testPokemon1.isEffectiveAgainst(testPokemon2)).toBe(false);
+    expect(testPokemon1.isEffectiveAgainst(testPokemon2)).toBe(true);
 
     testPokemon1.type = " Not Normal";
+    testPokemon2.type = "normal";
 
-    expect(testPokemon1.isEffectiveAgainst(testPokemon2)).toBe(true);
+    expect(testPokemon1.isEffectiveAgainst(testPokemon2)).toBe(false);
   });
 
   test("check if Pokemon class has a isWeakTo() method", () => {
@@ -65,9 +66,9 @@ describe("Pokemon", () => {
     testPokemon1.type = "normal";
 
     testPokemon2.type = "Not Normal";
-    expect(testPokemon1.isWeakTo(testPokemon2)).toBe(false);
+    expect(testPokemon1.isWeakTo(testPokemon2)).toBe(true);
 
-    expect(testPokemon2.isWeakTo(testPokemon1)).toBe(true);
+    expect(testPokemon2.isWeakTo(testPokemon1)).toBe(false);
   });
 
   test("check if Pokemon class has a takeDamage() method", () => {
@@ -522,11 +523,46 @@ describe("Battle Class: ", () => {
     this.hitPoints -= healthDamage;
   }
 */
+
       testBattle.fight();
       expect(testWater2.hitPoints).toBe(25);
       expect(testFire1.hitPoints).toBe(-20); ///(80 - 1.25 * 80);
       expect(testFire1.hasFainted()).toBe(true);
       expect(testWater2.hasFainted()).toBe(false);
+    });
+
+    test(" testing with two fire type Pokemon", () => {
+      //define input Trainers
+      const trainer1 = new Trainer();
+      const trainer2 = new Trainer();
+
+      //define the Pokemons
+      const testFire1 = new Fire("Charmander", 128, 70);
+      const testFire2 = new Fire("Charazard", 126, 80);
+
+      const testWater1 = new Water("Prinplup", 80, 122);
+      const testGrass1 = new Grass("Grotle", 117, 44);
+      const testGrass2 = new Grass("grass2", 75, 25);
+
+      //grass is efective against water
+      //water is weak to grass
+
+      // store pokemons in trainers belt
+      trainer1.catch(testFire1);
+      trainer1.catch(testWater1);
+      trainer1.catch(testGrass1);
+
+      trainer2.catch(testFire2);
+      trainer2.catch(testFire1);
+      trainer2.catch(testGrass1);
+
+      const testBattle = new Battle(trainer1, trainer2, testFire1, testFire2);
+
+      testBattle.fight();
+      expect(testFire1.hitPoints).toBe(48);
+      expect(testFire2.hitPoints).toBe(-14); ///(80 - 1.25 * 80);  --56
+      expect(testFire1.hasFainted()).toBe(false);
+      expect(testFire2.hasFainted()).toBe(true);
     });
   });
 });

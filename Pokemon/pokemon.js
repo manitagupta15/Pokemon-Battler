@@ -216,11 +216,20 @@ class Battle {
 
         if (pokemon2.isEffectiveAgainst(pokemon1)) {
           pokemon2.takeDamage(0.75 * pokemon1.attackDamage);
-          console.log(`Pokemon ${pokemon2.name} used ${pokemon2.move}`);
+          console.log(
+            `Pokemon ${pokemon2.name} is effective against ${pokemon1.name} and uses move ${pokemon2.move}`
+          );
         } else if (pokemon2.isWeakTo(pokemon1)) {
           pokemon2.takeDamage(1.25 * pokemon1.attackDamage);
-          console.log(`Pokemon ${pokemon2.name} used ${pokemon2.move}`);
-        } else pokemon2.takeDamage(pokemon1.attackDamage);
+          console.log(
+            `Pokemon ${pokemon2.name} is weak against ${pokemon1.name} and used move ${pokemon2.move}`
+          );
+        } else {
+          pokemon2.takeDamage(pokemon1.attackDamage);
+          console.log(
+            `Pokemon ${pokemon2.name} is neither efffective nor weak against ${pokemon1.name} and used move ${pokemon2.move}`
+          );
+        }
 
         // attack message
         //if the defending Pokemon faints (depletes all hit points), the attacker wins.​
@@ -232,11 +241,20 @@ class Battle {
       } else {
         if (pokemon1.isEffectiveAgainst(pokemon2)) {
           pokemon1.takeDamage(0.75 * pokemon2.attackDamage);
-          console.log(`Pokemon ${pokemon1.name} used ${pokemon1.move}`);
+          console.log(
+            `Pokemon ${pokemon1.name} is effective against ${pokemon2.name} and uses move ${pokemon1.move}`
+          );
         } else if (pokemon1.isWeakTo(pokemon2)) {
           pokemon1.takeDamage(1.25 * pokemon2.attackDamage);
-          console.log(`Pokemon ${pokemon2.name} used ${pokemon2.move}`);
-        } else pokemon1.takeDamage(pokemon2.attackDamage);
+          console.log(
+            `Pokemon ${pokemon1.name} is weak against ${pokemon2.name} and used move ${pokemon1.move}`
+          );
+        } else {
+          pokemon1.takeDamage(pokemon2.attackDamage);
+          console.log(
+            `Pokemon ${pokemon1.name} is neither efffective nor weak against ${pokemon2.name} and used move ${pokemon1.move}`
+          );
+        }
 
         // attack message
         //if the defending Pokemon faints (depletes all hit points), the attacker wins.​

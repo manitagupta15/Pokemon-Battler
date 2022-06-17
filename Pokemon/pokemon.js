@@ -1,7 +1,50 @@
+const inquirer = require("inquirer");
+
+/*
+function intailiseTrainerPokemons(train1, train2) {
+  train1PokemonChoices = [];
+  train2PokemonChoices = [];
+
+  for (let i = 0; i < train1.belt.length; i++) {
+    if (train1.belt[i].storage !== null) {
+      train1PokemonChoices.push(train1.belt[i].storage);
+    }
+  }
+
+  for (let i = 0; i < train2.belt.length; i++) {
+    if (train2.belt[i].storage !== null) {
+      train2PokemonChoices.push(train2.belt[i].storage);
+    }
+  }
+
+  inquire
+    .prompt([
+      {
+        name: "pokemon",
+        type: "list",
+        message: "Choose your Pokemon",
+        choices: train1PokemonChoices,
+      },
+    ])
+    .then((trainer1pokemon) => {
+      radomTrainer2Pokemon =
+        train2PokemonChoices[
+          Math.floor(Math.random() * train2PokemonChoices.length)
+        ];
+      beginBattle(
+        player.getPokemon(trainer1pokemon.pokemon),
+        radomTrainer2Pokemon
+      );
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+*/
 class Pokemon {
-  constructor(name, hitPoints = 0, attackDamage = 0) {
+  constructor(name, hitPoints = 0, attackDamage = 0, type) {
     this.name = name;
-    this.type = "normal";
+    this.type = type ? type : "normal";
     this.hitPoints = hitPoints;
     this.attackDamage = attackDamage;
     this.move = "tackle";
@@ -168,7 +211,8 @@ class Pokeballs {
   }
 }
 class Trainer {
-  constructor() {
+  constructor(name) {
+    this.name = name;
     this.belt = [];
   }
   catch(newPok) {
@@ -201,10 +245,13 @@ class Battle {
   }
 
   fight() {
+    console.log(this.TrainerPokemon1, "<--pokemon1");
+    console.log(this.TrainerPokemon2, "<--pokemon2");
+
     //attacker
-    const pokemon1 = this.trainer1.getPokemon(this.TrainerPokemon1.name);
+    const pokemon1 = this.TrainerPokemon1; //this.trainer1.getPokemon(this.TrainerPokemon1.name);
     //defender
-    const pokemon2 = this.trainer2.getPokemon(this.TrainerPokemon2.name);
+    const pokemon2 = this.TrainerPokemon2; // this.trainer2.getPokemon(this.TrainerPokemon2.name);
 
     let i = 0;
     let j = true;
@@ -269,6 +316,80 @@ class Battle {
   // The message will vary depending on the defender's weakness/strength.
 }
 
+const bulbasaur1 = new Pokemon("bulbasaur", 30, 6, "grass");
+const bulbasaur2 = new Pokemon("bulbasaur", 30, 6, "grass");
+const charmander1 = new Pokemon("charmander", 24, 8, "fire");
+const charmander2 = new Pokemon("charmander", 24, 8, "fire");
+const squirtle1 = new Pokemon("squirtle", 28, 7, "water");
+const squirtle2 = new Pokemon("squirtle", 28, 7, "water");
+const eevee1 = new Pokemon("eevee", 30, 6, "normal");
+const eevee2 = new Pokemon("eevee", 30, 6, "normal");
+
+let trainers = ["Ash", "Maxie", "Bea"];
+let pokemon = {
+  bulbasaur1,
+  bulbasaur2,
+  charmander1,
+  charmander2,
+  squirtle1,
+  squirtle2,
+  eevee1,
+  eevee2,
+};
+let pokemonStrings = ["bulbasaur", "charmander", "squirtle", "eevee"];
+
+const questions = [
+  {
+    type: "list",
+    name: "trainer1",
+    message: "player 1 choose your trainer",
+    choices: trainers,
+  },
+  {
+    type: "list",
+    name: "trainer2",
+    message: "player 2 choose your trainer",
+    choices: trainers,
+  },
+  {
+    type: "list",
+    name: "pokemon1",
+    message: "player 1 choose your pokemon",
+    choices: pokemonStrings,
+  },
+  {
+    type: "list",
+    name: "pokemon2",
+    message: "player 2 choose your pokemon",
+    choices: pokemonStrings,
+  },
+];
+
+inquirer
+  .prompt(questions)
+  .then((answers) => {
+    const pokemon1 = answers.pokemon1;
+    const pokemon2 = answers.pokemon2;
+    const trainer1 = answers.trainer1;
+    const trainer2 = answers.trainer2;
+
+    const pokemon1Class = pokemon[`${pokemon1}1`];
+    const pokemon2Class = pokemon[`${pokemon2}2`];
+
+    const myBattle = new Battle(
+      trainer1,
+      trainer2,
+      pokemon1Class,
+      pokemon2Class
+    );
+
+    myBattle.fight();
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
+/*
 module.exports = {
   Pokemon,
   Fire,
@@ -281,4 +402,4 @@ module.exports = {
   Pokeballs,
   Trainer,
   Battle,
-};
+};*/

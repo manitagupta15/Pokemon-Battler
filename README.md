@@ -2,11 +2,11 @@
 
 ## To install all dependencies required --
 
-> `run npm install`
+> `npm install`
 
 ## Type following command to start the game in Command Prompt--
 
-> `run node index.js`
+> `node pokemon.js`
 
 ## Current functionality---
 

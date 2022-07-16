@@ -56,6 +56,7 @@ class Fire extends Pokemon {
     }
   }
 }
+
 class Grass extends Pokemon {
   constructor(name, hitPoints = 0, attackDamage = 0) {
     super(name);
@@ -78,6 +79,7 @@ class Grass extends Pokemon {
     }
   }
 }
+
 class Water extends Pokemon {
   constructor(name, hitPoints = 0, attackDamage = 0) {
     super(name);

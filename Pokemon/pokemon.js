@@ -1,46 +1,5 @@
 const inquirer = require("inquirer");
 
-/*
-function intailiseTrainerPokemons(train1, train2) {
-  train1PokemonChoices = [];
-  train2PokemonChoices = [];
-
-  for (let i = 0; i < train1.belt.length; i++) {
-    if (train1.belt[i].storage !== null) {
-      train1PokemonChoices.push(train1.belt[i].storage);
-    }
-  }
-
-  for (let i = 0; i < train2.belt.length; i++) {
-    if (train2.belt[i].storage !== null) {
-      train2PokemonChoices.push(train2.belt[i].storage);
-    }
-  }
-
-  inquire
-    .prompt([
-      {
-        name: "pokemon",
-        type: "list",
-        message: "Choose your Pokemon",
-        choices: train1PokemonChoices,
-      },
-    ])
-    .then((trainer1pokemon) => {
-      radomTrainer2Pokemon =
-        train2PokemonChoices[
-          Math.floor(Math.random() * train2PokemonChoices.length)
-        ];
-      beginBattle(
-        player.getPokemon(trainer1pokemon.pokemon),
-        radomTrainer2Pokemon
-      );
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-}
-*/
 class Pokemon {
   constructor(name, hitPoints = 0, attackDamage = 0, type) {
     this.name = name;
@@ -274,7 +233,7 @@ class Battle {
         } else {
           pokemon2.takeDamage(pokemon1.attackDamage);
           console.log(
-            `Pokemon ${pokemon2.name} is neither efffective nor weak against ${pokemon1.name} and used move ${pokemon2.move}`
+            `Pokemon ${pokemon2.name} is neither effective nor weak against ${pokemon1.name} and used move ${pokemon2.move}`
           );
         }
 
@@ -283,8 +242,7 @@ class Battle {
         if (pokemon2.hasFainted()) {
           console.log(pokemon2.name + " has Fainted and lost!");
           j = false;
-          //  return j;
-        } // else return j;
+        }
       } else {
         if (pokemon1.isEffectiveAgainst(pokemon2)) {
           pokemon1.takeDamage(0.75 * pokemon2.attackDamage);
@@ -364,32 +322,42 @@ const questions = [
     choices: pokemonStrings,
   },
 ];
+const newBattle = [
+  {
+    type: "confirm",
+    name: "battle",
+    message: "Would you like to battle?",
+  },
+];
 
 inquirer
-  .prompt(questions)
-  .then((answers) => {
-    const pokemon1 = answers.pokemon1;
-    const pokemon2 = answers.pokemon2;
-    const trainer1 = answers.trainer1;
-    const trainer2 = answers.trainer2;
+  .prompt(newBattle)
+  .then((response) => {
+    if (response.battle) {
+      inquirer.prompt(questions).then((answers) => {
+        const pokemon1 = answers.pokemon1;
+        const pokemon2 = answers.pokemon2;
+        const trainer1 = answers.trainer1;
+        const trainer2 = answers.trainer2;
 
-    const pokemon1Class = pokemon[`${pokemon1}1`];
-    const pokemon2Class = pokemon[`${pokemon2}2`];
+        const pokemon1Class = pokemon[`${pokemon1}1`];
+        const pokemon2Class = pokemon[`${pokemon2}2`];
 
-    const myBattle = new Battle(
-      trainer1,
-      trainer2,
-      pokemon1Class,
-      pokemon2Class
-    );
+        const myBattle = new Battle(
+          trainer1,
+          trainer2,
+          pokemon1Class,
+          pokemon2Class
+        );
 
-    myBattle.fight();
+        myBattle.fight();
+      });
+    }
   })
   .catch((err) => {
     console.log(err);
   });
 
-/*
 module.exports = {
   Pokemon,
   Fire,
@@ -402,4 +370,4 @@ module.exports = {
   Pokeballs,
   Trainer,
   Battle,
-};*/
+};
